@@ -4,7 +4,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/shownmedia/shown-setup/main/install.sh | bash
 #
 # Installs Homebrew, git, GitHub CLI and Claude Code, signs you into GitHub (browser),
-# adds Shown's private plugin marketplace, then opens Claude and runs /shown-setup,
+# adds Shown's private plugin marketplace, then opens Claude and runs Shown setup,
 # which handles everything else. Safe to run again; it skips what's already done.
 set -euo pipefail
 
@@ -14,7 +14,7 @@ has() { command -v "$1" >/dev/null 2>&1; }
 if [ "$(uname)" != "Darwin" ]; then
   echo "This installer is for Macs. On another OS, install Claude Code (https://claude.com/claude-code),"
   echo "then run: claude plugin marketplace add https://github.com/shownmedia/shown-claude.git"
-  echo "          claude plugin install shown-core@shown   and type /shown-setup in Claude."
+  echo '          claude plugin install shown-core@shown   then tell Claude "run Shown setup".'
   exit 1
 fi
 
@@ -78,7 +78,7 @@ bash "$HOME/.claude/plugins/marketplaces/shown/plugins/shown-core/skills/shown-s
 
 # 7. Hand off to Claude for logins and the rest
 bold "Almost done. Claude opens next."
-echo "If it asks you to log in to Claude, use your Shown account. Then it runs /shown-setup and"
+echo "If it asks you to log in to Claude, use your Shown account. Then it runs Shown setup and"
 echo "walks you through Google, Slack, Figma and the rest."
 sleep 2
-exec claude "/shown-setup"
+exec claude "Run Shown setup for me."
