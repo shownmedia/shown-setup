@@ -1,5 +1,13 @@
 # shown-setup
 
+## Commands
+```
+test:        none (no suite). Closest check: bash -n install.sh (a real run installs things and execs into Claude; no dry-run mode)
+run local:   bash install.sh (idempotent; first run on a fresh Mac exits 0 after the Xcode popup, re-run it)
+deploy:      git push origin main (the curl one-liner serves main raw, so a push is live immediately)
+verify live: curl -fsSL https://raw.githubusercontent.com/shownmedia/shown-setup/main/install.sh | diff -q - install.sh prints nothing
+```
+
 Public one-command bootstrap installer that gets a new Shown Media teammate's Mac ready for Claude Code. This repo is just `install.sh` + `README.md` — no app, no build, no tests, no runtime deps.
 
 ## What + where
@@ -23,11 +31,6 @@ Public one-command bootstrap installer that gets a new Shown Media teammate's Ma
 
 ## Data
 None. No DB, no state file, no secrets stored in this repo. The only "state" it touches on the user's machine is standard tool installs (`~/.zprofile`, `~/.zshrc` PATH lines) and Claude's own plugin marketplace config (`~/.claude/plugins/marketplaces/`). Also writes `~/.claude/settings.json` (bypass-permissions on, via shown-core's `settings.sh`) and git credential config (via `gh auth setup-git`).
-
-## Commands
-- Run it: `bash install.sh` (or via the curl one-liner in README.md). Idempotent — re-running skips anything already installed (`has()` checks, marketplace/plugin list checks). Exception: on a brand-new Mac with no Xcode CLI tools, the first run exits 0 after triggering the Xcode install popup and prints instructions to re-run; that is expected, not a failure — it's a two-pass flow on first use.
-- No install/build/test/lint — there's no package.json, no CI config in this repo.
-- No dry-run mode. To check a change without side effects, use `bash -n install.sh` (syntax check) or read the diff; running it for real triggers live installs, `settings.json` edits, and execs into Claude at the end.
 
 ## Env vars
 None read or set by this script itself. Downstream (post-handoff) env/secrets setup happens in `shown-claude`'s `shown-setup` skill, not here.
