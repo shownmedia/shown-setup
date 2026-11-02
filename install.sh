@@ -60,9 +60,9 @@ if ! gh auth status >/dev/null 2>&1; then
 fi
 gh auth setup-git
 if ! gh api orgs/shownmedia/repos -q '.[0].name' >/dev/null 2>&1 || ! gh api repos/shownmedia/shown-claude >/dev/null 2>&1; then
-  bold "Your GitHub account can't see Shown's repos yet."
-  echo "Ask Mitchell or Alejandro to add $(gh api user -q .login 2>/dev/null || echo you) to the shownmedia GitHub org,"
-  echo "accept the email invite, then run this same command again."
+  bold "This installer is for people who build Shown's bots and apps (it needs the shownmedia GitHub org)."
+  echo "Everyone else: Claude Code and your AI bot install with one public command, no GitHub needed:"
+  echo "  curl -fsSL https://raw.githubusercontent.com/shownmedia/ai-me/main/setup.sh | bash"
   exit 1
 fi
 

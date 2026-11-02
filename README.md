@@ -8,4 +8,8 @@ curl -fsSL https://raw.githubusercontent.com/shownmedia/shown-setup/main/install
 
 It installs Claude Code and the basics, signs you into GitHub, adds Shown's skills, then opens Claude to walk you through the rest. Safe to run again any time.
 
-You need to be in the `shownmedia` GitHub org first. Ask Mitchell or Alejandro for an invite.
+This one is for people who build Shown's bots and apps: it needs the `shownmedia` GitHub org. Everyone else installs Claude Code and their AI bot with the public command, no GitHub needed:
+
+```
+curl -fsSL https://raw.githubusercontent.com/shownmedia/ai-me/main/setup.sh | bash
+```
