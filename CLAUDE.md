@@ -25,7 +25,7 @@ Public one-command bootstrap installer that gets a new Shown Media teammate's Ma
   5. `gh auth login` + org-membership check against `shownmedia` org/`shown-claude` repo
   6. Adds marketplace `https://github.com/shownmedia/shown-claude.git` (name `shown`), installs plugins `shown-core` + `keep-awake-charging`, then runs shown-core's `settings.sh` (`.../plugins/shown-core/skills/shown-setup/scripts/settings.sh`)
   7. `exec claude "Run Shown setup for me."` — hands off to the `shown-setup` skill (lives in the *other* repo, `shown-claude`) for logins/Google/Slack/Figma/etc. Uses a plain-English prompt, not `/shown-setup`, because installed plugin skills are namespaced (`shown-core:shown-setup`) and a bare slash command does not resolve (fixed in commit 008df1f — do not revert to a slash command).
-- `README.md` — the one-liner teammates paste, plus the org-invite prerequisite.
+- `README.md` — the one-liner teammates paste, plus the pointer to the public ai-me command for non-builders.
 - To change what gets installed or which plugins ship by default: edit step 6 in `install.sh` directly, no other file.
 - To change what happens *after* handoff (logins, settings, skills): that's in `shownmedia/shown-claude`, NOT here. See Related repos.
 
@@ -39,7 +39,7 @@ None read or set by this script itself. Downstream (post-handoff) env/secrets se
 - Verified against memory `project_shown_claude_setup.md`: Shown's actual skills (shown-core, shown-launch, shown-dev, etc.) do NOT live in this repo or in `~/.claude/skills` — they live in the private marketplace repo `shownmedia/shown-claude` (local clone `~/shown-claude`). This repo only bootstraps the marketplace connection.
 - `install.sh` requires macOS (`uname == Darwin`); on other OS it prints manual marketplace-add instructions and exits 1.
 - `exec </dev/tty` at the top is deliberate — needed because the script is piped from curl, so prompts (sudo password, `gh auth login`) still reach the real keyboard.
-- The org-membership check (step 5) gates everything after it: no `shownmedia` org access -> script exits 1 with instructions to ask Mitchell or Alejandro for an invite.
+- The org-membership check (step 5) gates everything after it: no `shownmedia` org access -> script exits 1 and points them to the public ai-me setup (no GitHub needed).
 - Plugin source must be an `https://` git URL, not SSH — noted in memory as a past failure mode for the marketplace add (relevant if this script's marketplace URL is ever changed).
 
 ## Related repos
