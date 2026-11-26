@@ -76,6 +76,29 @@ for p in shown-core keep-awake-charging; do
 done
 bash "$HOME/.claude/plugins/marketplaces/shown/plugins/shown-core/skills/shown-setup/scripts/settings.sh" || true
 
+# 6b. Obsidian, opened on a vault of what Claude knows (live links, nothing copied): its memory of you,
+# your CLAUDE.md and Shown's skills. Editing a memory note there changes what Claude remembers.
+bold "Installing Obsidian"
+[ -d /Applications/Obsidian.app ] || brew install --cask obsidian || true
+VAULT="$HOME/Claude vault"
+MEM="$HOME/.claude/projects/$(printf '%s' "$HOME" | sed 's/[^A-Za-z0-9]/-/g')/memory"
+mkdir -p "$MEM" "$VAULT/Skills" "$HOME/.claude/skills"
+ln -sfn "$MEM" "$VAULT/Memory"
+ln -sfn "$HOME/.claude/plugins/marketplaces/shown/plugins" "$VAULT/Skills/Shown skills"
+ln -sfn "$HOME/.claude/skills" "$VAULT/Skills/My skills"
+[ -f "$HOME/.claude/CLAUDE.md" ] && ln -sf "$HOME/.claude/CLAUDE.md" "$VAULT/CLAUDE.md"
+python3 - "$VAULT" <<'PY' || true
+import json, os, secrets, sys, time
+vault = sys.argv[1]
+p = os.path.expanduser("~/Library/Application Support/obsidian/obsidian.json")
+os.makedirs(os.path.dirname(p), exist_ok=True)
+d = json.load(open(p)) if os.path.exists(p) and os.path.getsize(p) else {}
+v = d.setdefault("vaults", {})
+if not any(x.get("path") == vault for x in v.values()):
+    v[secrets.token_hex(8)] = {"path": vault, "ts": int(time.time() * 1000), "open": not v}
+json.dump(d, open(p, "w"))
+PY
+
 # 7. Hand off to Claude for logins and the rest
 bold "Almost done. Claude opens next."
 echo "If it asks you to log in to Claude, use your Shown account. Then it runs Shown setup and"

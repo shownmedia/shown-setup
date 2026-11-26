@@ -24,6 +24,7 @@ Public one-command bootstrap installer that gets a new Shown Media teammate's Ma
   4. Claude Code native installer (`claude.ai/install.sh`)
   5. `gh auth login` + org-membership check against `shownmedia` org/`shown-claude` repo
   6. Adds marketplace `https://github.com/shownmedia/shown-claude.git` (name `shown`), installs plugins `shown-core` + `keep-awake-charging`, then runs shown-core's `settings.sh` (`.../plugins/shown-core/skills/shown-setup/scripts/settings.sh`)
+  6b. Installs Obsidian (brew cask) and builds `~/Claude vault`: symlinks to the user's Claude memory folder, `~/.claude/CLAUDE.md`, the Shown plugins and `~/.claude/skills`; registers it in Obsidian only if it isn't there yet (opens by default only when they have no other vault)
   7. `exec claude "Run Shown setup for me."` — hands off to the `shown-setup` skill (lives in the *other* repo, `shown-claude`) for logins/Google/Slack/Figma/etc. Uses a plain-English prompt, not `/shown-setup`, because installed plugin skills are namespaced (`shown-core:shown-setup`) and a bare slash command does not resolve (fixed in commit 008df1f — do not revert to a slash command).
 - `README.md` — the one-liner teammates paste, plus the pointer to the public ai-me command for non-builders.
 - To change what gets installed or which plugins ship by default: edit step 6 in `install.sh` directly, no other file.
